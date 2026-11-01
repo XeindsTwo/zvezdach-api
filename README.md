@@ -21,7 +21,8 @@ python manage.py migrate и python manage.py createsuperuser.
 Настройте свои ALLOWED_HOSTS, CORS, CSRF и FRONTEND_URL.
 Production требует DEBUG=false, собственного SECRET_KEY и PostgreSQL.
 
-Публикация под префиксом общего домена пока НЕ настроена: она потребует
-отдельной настройки путей и cookies. Код подготовлен для отдельного host.
+Для общего домена задайте DJANGO_URL_PREFIX=/zvezdach и используйте Caddy handle_path /zvezdach/*, снимающий префикс перед проксированием на 8001
+Статика и медиа должны обслуживаться отдельными маршрутами /zvezdach/static/* и /zvezdach/media/*
+Имена и пути cookies изолированы от Chatus
 Демонстрационные материалы Chatus не скопированы — seed_demo_articles
 не запускайте. На production не копируйте чужую базу или .env.

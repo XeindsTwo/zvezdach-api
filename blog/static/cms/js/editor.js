@@ -1,5 +1,5 @@
 (() => {
-  const csrf = () => document.cookie.split("; ").find((row) => row.startsWith("csrftoken="))?.split("=")[1] || "";
+  const csrf = () => document.querySelector("[name=csrfmiddlewaretoken]")?.value || "";
   const MAX_IMAGE_FILE_SIZE = 2 * 1024 * 1024;
   const MAX_GIF_FILE_SIZE = 5 * 1024 * 1024;
   const ALLOWED_IMAGE_TYPES = new Set(["image/png", "image/jpeg", "image/webp", "image/avif", "image/gif"]);

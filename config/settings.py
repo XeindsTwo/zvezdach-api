@@ -103,9 +103,13 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = "/static/"
+URL_PREFIX = os.getenv("DJANGO_URL_PREFIX", "").strip().rstrip("/")
+if URL_PREFIX and (not URL_PREFIX.startswith("/") or ".." in URL_PREFIX or "?" in URL_PREFIX or "#" in URL_PREFIX):
+    raise ValueError("DJANGO_URL_PREFIX must be an absolute URL path")
+FORCE_SCRIPT_NAME = URL_PREFIX or None
+STATIC_URL = f"{URL_PREFIX}/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-MEDIA_URL = "/media/"
+MEDIA_URL = f"{URL_PREFIX}/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -131,8 +135,8 @@ REST_FRAMEWORK = {
 }
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000").rstrip("/")
-LOGIN_URL = "/cms/login/"
-LOGIN_REDIRECT_URL = "/cms/"
+LOGIN_URL = f"{URL_PREFIX}/cms/login/"
+LOGIN_REDIRECT_URL = f"{URL_PREFIX}/cms/"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 12 * 1024 * 1024
 
 # The public blog is small enough for Django's in-process cache. This keeps
@@ -153,3 +157,6 @@ SECURE_HSTS_PRELOAD = SECURE_HSTS_SECONDS > 0
 
 SESSION_COOKIE_NAME = "zvezdach_blog_sessionid"
 CSRF_COOKIE_NAME = "zvezdach_blog_csrftoken"
+
+SESSION_COOKIE_PATH = f"{URL_PREFIX}/"
+CSRF_COOKIE_PATH = f"{URL_PREFIX}/"
