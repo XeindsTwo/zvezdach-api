@@ -1,0 +1,31 @@
+# Environment and local runtimes
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+env/
+node_modules/
+
+# Generated application files
+staticfiles/
+media/
+.tmp-preview/
+db.sqlite3
+*.sqlite3
+
+# Python caches and reports
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+coverage/
+htmlcov/
+
+# Editors and operating system files
+.idea/
+.vscode/
+*.log
+.DS_Store
+Thumbs.db

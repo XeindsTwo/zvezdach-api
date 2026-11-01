@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: zvezdach_blog
+      POSTGRES_USER: zvezdach_blog
+      POSTGRES_PASSWORD: zvezdach_blog_dev
+    ports:
+      - "5433:5432"
+    volumes:
+      - zvezdach_blog_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zvezdach_blog -d zvezdach_blog"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  zvezdach_blog_postgres_data:

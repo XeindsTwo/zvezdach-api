@@ -1,0 +1,28 @@
+{% extends 'cms/base.html' %}
+{% block title %}Теги — Звездач{% endblock %}
+{% block section_name %}Теги{% endblock %}
+{% block content %}
+<section class="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+  <header class="border-b border-slate-100 px-5 py-5 sm:px-7">
+    <h1 class="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">Теги статей</h1>
+    <p class="mt-1 max-w-2xl text-sm text-slate-500">Теги добавляются при редактировании статьи и создают публичные страницы со связанными материалами</p>
+  </header>
+  <div class="space-y-6 px-5 py-5 sm:px-7 sm:py-6">
+    {% for section in tag_sections %}
+      <section aria-labelledby="tag-section-{{ section.locale }}">
+        <div class="mb-3 flex items-center gap-2">
+          <h2 id="tag-section-{{ section.locale }}" class="text-base font-bold text-slate-800">{{ section.title }}</h2>
+          <span class="rounded-md bg-slate-100 px-2 py-1 text-xs font-semibold uppercase text-slate-500">{{ section.locale }}</span>
+        </div>
+        <div class="flex min-h-16 flex-wrap content-start gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-4">
+          {% for tag in section.tags %}
+            <span class="inline-flex items-center self-start rounded-xl border border-[#f1c66e] bg-[#fff5dc] px-4 py-2.5 text-sm font-semibold text-[#79501a]">#{{ tag.name }} <small class="ml-1.5 font-semibold opacity-50">{{ tag.article_count }}</small></span>
+          {% empty %}
+            <p class="py-2 text-sm text-slate-400">В этой языковой версии тегов пока нет</p>
+          {% endfor %}
+        </div>
+      </section>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

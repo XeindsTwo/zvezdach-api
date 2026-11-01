@@ -1,0 +1,38 @@
+@import "tailwindcss";
+@source "../../blog/templates/**/*.html";
+@source "../../blog/static/cms/js/**/*.js";
+@source "../../blog/**/*.py";
+
+@font-face { font-family: "SF Pro Display"; src: url("../../cms/fonts/SFProDisplay-Regular.woff2") format("woff2"); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: "SF Pro Display"; src: url("../../cms/fonts/SFProDisplay-Medium.woff2") format("woff2"); font-style: normal; font-weight: 500; font-display: swap; }
+@font-face { font-family: "SF Pro Display"; src: url("../../cms/fonts/SFProDisplay-Semibold.woff2") format("woff2"); font-style: normal; font-weight: 600 700; font-display: swap; }
+@font-face { font-family: "SF Pro Display"; src: url("../../cms/fonts/SFProDisplay-Heavy.woff2") format("woff2"); font-style: normal; font-weight: 800 950; font-display: swap; }
+
+@theme {
+  --font-sans: "SF Pro Display", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  button, a { cursor: pointer; }
+  body, small { font-size: .875rem; }
+  input:focus, textarea:focus, select:focus, button:focus, a:focus { outline: none !important; box-shadow: none !important; }
+  .errorlist { margin-top: .4rem; color: #dc2626; font-size: .75rem; }
+  [aria-invalid="true"] { border-color: #ef4444 !important; box-shadow: none !important; }
+  dialog::backdrop { background: rgb(23 19 13 / .72); backdrop-filter: blur(4px); }
+  dialog[open] { animation: cms-modal-in .18s ease-out; }
+  dialog[open]::backdrop { animation: cms-backdrop-in .18s ease-out; }
+  dialog[data-closing] { animation: cms-modal-out .16s ease-in forwards; }
+  dialog[data-closing]::backdrop { animation: cms-backdrop-out .16s ease-in forwards; }
+  .tox-tinymce { border-color: #e2e8f0 !important; border-radius: 1rem !important; }
+  .tox .tox-editor-header { box-shadow: none !important; border-bottom: 1px solid #e2e8f0 !important; }
+  @keyframes cms-modal-in { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  @keyframes cms-modal-out { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(10px) scale(.985); } }
+  @keyframes cms-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes cms-backdrop-out { from { opacity: 1; } to { opacity: 0; } }
+}
+
+@layer utilities {
+  [class*="shadow"] { box-shadow: none !important; }
+  label > span.mb-2 { margin-bottom: 5px !important; }
+  .text-xs, .text-\[10px\], .text-\[11px\] { font-size: .875rem !important; line-height: 1.25rem !important; }
+}
