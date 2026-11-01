@@ -12,7 +12,6 @@ from .slugs import readable_slug
 LOCALE_CHOICES_RU = (
     ("ru", "Русский"),
     ("en", "Английский"),
-    ("id", "Индонезийский"),
 )
 
 STATUS_CHOICES_RU = (
@@ -215,11 +214,10 @@ class ArticleForm(forms.ModelForm):
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ("name_ru", "name_en", "name_id", "is_active")
+        fields = ("name_ru", "name_en", "is_active")
         labels = {
             "name_ru": "Название на русском",
             "name_en": "Название на английском",
-            "name_id": "Название на индонезийском",
             "is_active": "Показывать на сайте",
         }
 
@@ -230,7 +228,6 @@ class CategoryForm(forms.ModelForm):
         self.fields["is_active"].widget.attrs["class"] = "peer sr-only"
         self.fields["name_ru"].widget.attrs["placeholder"] = "Например: Безопасность"
         self.fields["name_en"].widget.attrs["placeholder"] = "Например: Safety"
-        self.fields["name_id"].widget.attrs["placeholder"] = "Например: Keamanan"
 
 
 class GalleryImageForm(forms.ModelForm):

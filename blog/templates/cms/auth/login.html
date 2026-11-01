@@ -9,21 +9,21 @@
   <link rel="icon" href="{% static 'cms/images/favicon.svg' %}" type="image/svg+xml">
   <link rel="stylesheet" href="{% static 'cms/css/app.css' %}">
 </head>
-<body class="relative grid min-h-screen place-items-center overflow-hidden bg-[#0b0905] p-5 text-white antialiased">
-  <div class="pointer-events-none absolute inset-0 opacity-50" style="background:radial-gradient(circle at 50% 46%,rgba(255,173,25,.14),transparent 32%)"></div>
-  <main class="relative w-full max-w-md rounded-2xl border border-white/10 bg-[#14110b] p-7 sm:p-9">
-    <div class="mx-auto w-fit rounded-xl bg-[#1db1ee] px-4 py-3"><img src="{% static 'cms/images/zvezdach-logo.svg' %}" alt="Звездач" width="131" height="33" class="h-auto w-[131px]"></div>
+<body class="relative grid min-h-screen place-items-center overflow-hidden bg-[#090d10] p-5 text-white antialiased">
+  <div class="pointer-events-none absolute inset-0 opacity-50" style="background:radial-gradient(circle at 50% 46%,rgba(29,177,238,.14),transparent 32%)"></div>
+  <main class="relative w-full max-w-md rounded-2xl border border-white/10 bg-[#131619] p-7 sm:p-9">
+    <div class="mx-auto w-fit"><img src="{% static 'cms/images/zvezdach-logo.svg' %}" alt="Звездач" width="131" height="33" class="h-auto w-[131px]"></div>
     <div class="mt-8 text-center">
       <h1 class="text-3xl font-black tracking-tight">Авторизация</h1>
       <p class="mt-2 text-sm text-stone-400">Войдите, чтобы управлять статьями блога</p>
     </div>
-    <div id="login-feedback" class="mt-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700" role="alert" aria-live="polite" {% if not form.non_field_errors %}hidden{% endif %}>{% if form.non_field_errors %}Неверный логин или пароль.{% endif %}</div>
+    <div id="login-feedback" class="mt-5 text-sm font-semibold text-red-300" role="alert" aria-live="polite" {% if not form.non_field_errors %}hidden{% endif %}>{% if form.non_field_errors %}Неверный логин или пароль.{% endif %}</div>
     <form method="post" action="{% url 'cms:login' %}" id="login-form" class="mt-7 space-y-5" novalidate>
       {% csrf_token %}
       <input type="hidden" name="next" value="{{ next }}">
       <label class="block"><span class="mb-[5px] block text-sm font-semibold text-stone-300">Логин</span>{{ form.username }}</label>
       <label class="block"><span class="mb-[5px] block text-sm font-semibold text-stone-300">Пароль</span>{{ form.password }}</label>
-      <button type="submit" id="login-submit" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#1db1ee] px-5 py-3.5 text-sm font-normal text-[#211706] transition-colors duration-300 hover:bg-[#f39a00] disabled:cursor-wait"><span>Войти</span><svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+      <button type="submit" id="login-submit" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#1db1ee] px-5 py-3.5 text-sm font-normal text-[#092332] transition-colors duration-300 hover:bg-[#0099d8] disabled:cursor-wait"><span>Войти</span><svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
     </form>
   </main>
   <script src="{% static 'cms/js/login.js' %}"></script>

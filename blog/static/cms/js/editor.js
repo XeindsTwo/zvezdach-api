@@ -169,7 +169,7 @@
           }),
         });
       },
-      content_style: "body{font-family:'SF Pro Display',Inter,system-ui,sans-serif;font-size:17px;line-height:1.75;margin:0;padding:24px;color:#29251d}.mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before{left:24px!important;top:24px!important}p{margin:0 0 18px;text-indent:0}p[data-gallery-marker]{display:inline-block;margin:12px 0;padding:7px 11px;border-radius:9px;background:#fff1cf;color:#7b4e00;font-family:ui-monospace,monospace;font-size:14px;font-weight:600}h3{margin:32px 0 18px;font-size:21px;line-height:1.05}ol{list-style-type:decimal}img{max-width:100%;height:auto;border-radius:20px}iframe{display:block;width:560px;max-width:100%;aspect-ratio:16/9;height:auto;border:0;border-radius:20px;margin:18px 0}table{width:100%;margin:18px 0 28px;overflow:hidden;border:1px solid rgba(42,27,0,.2);border-radius:10px;border-collapse:separate;border-spacing:0}caption{margin-bottom:10px;font-weight:600;text-align:left}th,td{border:0;border-right:1px solid rgba(42,27,0,.2);border-bottom:1px solid rgba(42,27,0,.2);padding:10px 12px;vertical-align:top;text-align:left}th{background:#fff4dc;font-weight:600}tr>*:last-child{border-right:0}table>:last-child>tr:last-child>*{border-bottom:0}blockquote{border-left:4px solid #1db1ee;margin:28px 0;padding:4px 0 4px 20px;color:#6b6255}blockquote p{margin:0;font-size:20px;font-weight:600;line-height:1.35}blockquote cite{display:block;margin-top:12px;font-size:14px;font-style:normal;color:#8a8174}",
+      content_style: "body{font-family:'SF Pro Display',Inter,system-ui,sans-serif;font-size:17px;line-height:1.75;margin:0;padding:24px;color:#1d2023}.mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before{left:24px!important;top:24px!important}p{margin:0 0 18px;text-indent:0}p[data-gallery-marker]{display:inline-block;margin:12px 0;padding:7px 11px;border-radius:9px;background:#e5f6fd;color:#03658a;font-family:ui-monospace,monospace;font-size:14px;font-weight:600}h3{margin:32px 0 18px;font-size:21px;line-height:1.05}ol{list-style-type:decimal}img{max-width:100%;height:auto;border-radius:20px}iframe{display:block;width:560px;max-width:100%;aspect-ratio:16/9;height:auto;border:0;border-radius:20px;margin:18px 0}table{width:100%;margin:18px 0 28px;overflow:hidden;border:1px solid rgba(0,65,94,.2);border-radius:10px;border-collapse:separate;border-spacing:0}caption{margin-bottom:10px;font-weight:600;text-align:left}th,td{border:0;border-right:1px solid rgba(0,65,94,.2);border-bottom:1px solid rgba(0,65,94,.2);padding:10px 12px;vertical-align:top;text-align:left}th{background:#e5f6fd;font-weight:600}tr>*:last-child{border-right:0}table>:last-child>tr:last-child>*{border-bottom:0}blockquote{border-left:4px solid #1db1ee;margin:28px 0;padding:4px 0 4px 20px;color:#596973}blockquote p{margin:0;font-size:20px;font-weight:600;line-height:1.35}blockquote cite{display:block;margin-top:12px;font-size:14px;font-style:normal;color:#7c8c96}",
       images_upload_handler: (blobInfo) => new Promise((resolve, reject) => {
         const blob = blobInfo.blob();
         const uploadError = imageFileError(new File([blob], blobInfo.filename(), {type: blob.type}));
@@ -207,7 +207,7 @@
     tags.forEach((name) => {
       const chip = document.createElement("button");
       chip.type = "button";
-      chip.className = "rounded-full bg-amber-100 px-3 py-1.5 text-xs font-bold text-amber-900";
+      chip.className = "rounded-full bg-sky-100 px-3 py-1.5 text-xs font-bold text-sky-900";
       chip.textContent = `#${name} ×`;
       chip.addEventListener("click", () => { tags = tags.filter((item) => item !== name); sync(); hidden.dispatchEvent(new Event("change", {bubbles: true})); });
       chips.append(chip);
@@ -233,7 +233,7 @@
       payload.results.forEach((tag) => {
         const option = document.createElement("button");
         option.type = "button";
-        option.className = "block w-full px-4 py-2.5 text-left text-sm hover:bg-amber-50";
+        option.className = "block w-full px-4 py-2.5 text-left text-sm hover:bg-sky-50";
         option.textContent = `#${tag.name}`;
         option.addEventListener("click", () => add(tag.name));
         results.append(option);
@@ -595,7 +595,6 @@
     document.querySelectorAll("[data-gallery-group]").forEach((group) => {
       const number = group.dataset.galleryNumber;
       const forms = [...group.querySelectorAll("[data-gallery-form]")].filter((item) => !item.classList.contains("hidden"));
-      if (!group.querySelector("[data-gallery-caption]")?.value.trim()) errors.push(`Добавьте подпись к галерее №${number}`);
       if (!forms.length) errors.push(`Добавьте хотя бы одно изображение в галерею №${number}`);
       forms.forEach((galleryForm, index) => {
         const file = galleryForm.querySelector("input[type='file']");

@@ -16,13 +16,12 @@ from .slugs import unique_slug
 class Locale(models.TextChoices):
     EN = "en", "English"
     RU = "ru", "Russian"
-    ID = "id", "Indonesian"
 
 
 class Category(models.Model):
     name_ru = models.CharField(max_length=120)
     name_en = models.CharField(max_length=120)
-    name_id = models.CharField(max_length=120)
+    name_id = models.CharField(max_length=120, blank=True, default="")
     slug_ru = models.SlugField(max_length=140, unique=True)
     slug_en = models.SlugField(max_length=140, unique=True)
     slug_id = models.SlugField(max_length=140, unique=True)
@@ -35,7 +34,7 @@ class Category(models.Model):
         verbose_name_plural = "categories"
 
     def __str__(self) -> str:
-        return f"{self.name_ru} / {self.name_en} / {self.name_id}"
+        return f"{self.name_ru} / {self.name_en}"
 
     def name_for_locale(self, locale: str) -> str:
         return getattr(self, f"name_{locale}", self.name_en) or self.name_en
@@ -44,7 +43,7 @@ class Category(models.Model):
         return getattr(self, f"slug_{locale}", self.slug_en) or self.slug_en
 
     def save(self, *args, **kwargs):
-        for locale in (Locale.RU, Locale.EN, Locale.ID):
+        for locale in (Locale.RU, Locale.EN, "id"):
             slug_field = f"slug_{locale}"
             if not getattr(self, slug_field, ""):
                 setattr(

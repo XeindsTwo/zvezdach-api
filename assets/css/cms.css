@@ -18,7 +18,7 @@
   input:focus, textarea:focus, select:focus, button:focus, a:focus { outline: none !important; box-shadow: none !important; }
   .errorlist { margin-top: .4rem; color: #dc2626; font-size: .75rem; }
   [aria-invalid="true"] { border-color: #ef4444 !important; box-shadow: none !important; }
-  dialog::backdrop { background: rgb(23 19 13 / .72); backdrop-filter: blur(4px); }
+  dialog::backdrop { background: rgb(13 24 32 / .72); backdrop-filter: blur(4px); }
   dialog[open] { animation: cms-modal-in .18s ease-out; }
   dialog[open]::backdrop { animation: cms-backdrop-in .18s ease-out; }
   dialog[data-closing] { animation: cms-modal-out .16s ease-in forwards; }

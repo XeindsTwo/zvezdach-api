@@ -1,4 +1,4 @@
-VALID_LOCALES = ("ru", "en", "id")
+VALID_LOCALES = ("ru", "en")
 DEFAULT_LOCALE = "en"
 ARTICLE_SLUG_MAX_LENGTH = 220
 

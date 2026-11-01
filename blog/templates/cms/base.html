@@ -15,20 +15,20 @@
   <div class="min-h-screen lg:grid lg:grid-cols-[250px_minmax(0,1fr)]">
     <aside class="relative z-40 border-b border-white/5 bg-[#0d0128] text-white lg:sticky lg:top-0 lg:h-screen lg:border-b-0">
       <div class="flex h-18 items-center justify-between px-4 lg:h-auto lg:px-4 lg:py-6">
-        <a href="{% url 'cms:article-list' %}" class="rounded-xl bg-[#1db1ee] px-3 py-2" aria-label="Звездач"><img src="{% static 'cms/images/zvezdach-logo.svg' %}" alt="Звездач" width="131" height="33" class="h-auto w-[131px]"></a>
+        <a href="{% url 'cms:article-list' %}" class="px-3 py-2" aria-label="Звездач"><img src="{% static 'cms/images/zvezdach-logo.svg' %}" alt="Звездач" width="131" height="33" class="h-auto w-[131px]"></a>
         <button type="button" data-sidebar-toggle class="grid size-10 place-items-center rounded-xl border border-white/10 text-stone-300 lg:hidden" aria-label="Открыть меню">
           <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
       </div>
       <div data-sidebar-panel class="hidden border-t border-white/5 px-4 pb-5 lg:flex lg:h-[calc(100vh-88px)] lg:flex-col lg:border-0 lg:px-4 lg:pb-5">
         <nav class="space-y-1.5 pt-5 text-sm font-bold">
-          <a href="{% url 'cms:article-list' %}" class="flex items-center gap-3 rounded-xl px-3 py-3 transition {% if current == 'article-list' or current == 'article-create' or current == 'article-edit' %}bg-[#1db1ee] text-[#211706] shadow-lg shadow-black/20{% else %}text-stone-400 hover:bg-white/7 hover:text-white{% endif %}">
+          <a href="{% url 'cms:article-list' %}" class="flex items-center gap-3 rounded-xl px-3 py-3 transition {% if current == 'article-list' or current == 'article-create' or current == 'article-edit' %}bg-[#1db1ee] text-[#092332] shadow-lg shadow-black/20{% else %}text-stone-400 hover:bg-white/7 hover:text-white{% endif %}">
             <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h9l3 3v15H6z"/><path d="M9 11h6M9 15h6M15 3v4h4"/></svg>Статьи
           </a>
-          <a href="{% url 'cms:category-list' %}" class="flex items-center gap-3 rounded-xl px-3 py-3 transition {% if current == 'category-list' or current == 'category-create' or current == 'category-edit' %}bg-[#1db1ee] text-[#211706] shadow-lg shadow-black/20{% else %}text-stone-400 hover:bg-white/7 hover:text-white{% endif %}">
+          <a href="{% url 'cms:category-list' %}" class="flex items-center gap-3 rounded-xl px-3 py-3 transition {% if current == 'category-list' or current == 'category-create' or current == 'category-edit' %}bg-[#1db1ee] text-[#092332] shadow-lg shadow-black/20{% else %}text-stone-400 hover:bg-white/7 hover:text-white{% endif %}">
             <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h6v6H4zM14 5h6v6h-6zM4 15h6v4H4zM14 15h6v4h-6z"/></svg>Категории
           </a>
-          <a href="{% url 'cms:tag-list' %}" class="flex items-center gap-3 rounded-xl px-3 py-3 transition {% if current == 'tag-list' %}bg-[#1db1ee] text-[#211706] shadow-lg shadow-black/20{% else %}text-stone-400 hover:bg-white/7 hover:text-white{% endif %}">
+          <a href="{% url 'cms:tag-list' %}" class="flex items-center gap-3 rounded-xl px-3 py-3 transition {% if current == 'tag-list' %}bg-[#1db1ee] text-[#092332] shadow-lg shadow-black/20{% else %}text-stone-400 hover:bg-white/7 hover:text-white{% endif %}">
             <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 13 13 20l-9-9V4h7z"/><circle cx="8.5" cy="8.5" r="1"/></svg>Теги
           </a>
         </nav>

@@ -19,7 +19,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ("id", "name", "slug", "name_ru", "name_en", "name_id", "slug_ru", "slug_en", "slug_id")
+        fields = ("id", "name", "slug", "name_ru", "name_en", "slug_ru", "slug_en")
 
     def get_name(self, category):
         request = self.context.get("request")

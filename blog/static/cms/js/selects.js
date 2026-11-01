@@ -40,7 +40,7 @@
       menu.querySelectorAll("[data-select-option]").forEach((option) => {
         const selected = option.dataset.value === select.value;
         option.setAttribute("aria-selected", String(selected));
-        option.className = `mb-[3px] flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm font-semibold transition last:mb-0 ${selected ? "bg-[#fff1cf] text-[#7b4e00]" : "text-slate-600 hover:bg-slate-50"}`;
+        option.className = `mb-[3px] flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm font-semibold transition last:mb-0 ${selected ? "bg-[#e5f6fd] text-[#03658a]" : "text-slate-600 hover:bg-slate-50"}`;
       });
     };
     [...select.options].forEach((nativeOption) => {

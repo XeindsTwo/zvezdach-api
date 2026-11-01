@@ -24,7 +24,7 @@
 
     const trigger = document.createElement("button");
     trigger.type = "button";
-    trigger.className = "absolute right-0 top-0 grid h-full w-11 place-items-center text-slate-500 transition hover:text-[#9a6100]";
+    trigger.className = "absolute right-0 top-0 grid h-full w-11 place-items-center text-slate-500 transition hover:text-[#007eaf]";
     trigger.setAttribute("aria-label", "Открыть календарь");
     trigger.innerHTML = '<svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>';
     wrapper.append(trigger);
@@ -43,7 +43,7 @@
       <div data-calendar-days class="mt-1 grid grid-cols-7 gap-1"></div>
       <div class="mt-3 flex items-center justify-between border-t border-slate-100 pt-3">
         <button type="button" data-calendar-clear class="rounded-lg px-2 py-2 text-sm font-normal text-slate-500 transition hover:text-red-600">Очистить</button>
-        <button type="button" data-calendar-today class="rounded-lg bg-[#fff1cf] px-3 py-2 text-sm font-normal text-[#7b4e00] transition hover:bg-[#ffdda0]">Сегодня</button>
+        <button type="button" data-calendar-today class="rounded-lg bg-[#e5f6fd] px-3 py-2 text-sm font-normal text-[#03658a] transition hover:bg-[#b9e7f8]">Сегодня</button>
       </div>`;
     wrapper.append(panel);
 
@@ -73,7 +73,7 @@
         const value = toIso(date);
         const button = document.createElement("button");
         button.type = "button";
-        button.className = `grid aspect-square place-items-center rounded-lg text-sm font-normal transition ${value === selected ? "bg-[#20180b] text-white" : value === today ? "bg-[#fff1cf] text-[#7b4e00] hover:bg-[#ffdda0]" : "text-slate-700 hover:bg-slate-100"}`;
+        button.className = `grid aspect-square place-items-center rounded-lg text-sm font-normal transition ${value === selected ? "bg-[#092332] text-white" : value === today ? "bg-[#e5f6fd] text-[#03658a] hover:bg-[#b9e7f8]" : "text-slate-700 hover:bg-slate-100"}`;
         button.textContent = String(day);
         button.setAttribute("aria-label", value);
         if (value === selected) button.setAttribute("aria-current", "date");

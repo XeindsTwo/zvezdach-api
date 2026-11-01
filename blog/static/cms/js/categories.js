@@ -7,7 +7,6 @@
   const fields = {
     nameRu: form.querySelector("[name='name_ru']"),
     nameEn: form.querySelector("[name='name_en']"),
-    nameId: form.querySelector("[name='name_id']"),
     active: form.querySelector("[name='is_active']"),
   };
   const title = document.querySelector("#category-modal-title");
@@ -40,7 +39,7 @@
     form.querySelectorAll("[aria-invalid='true']").forEach((input) => input.removeAttribute("aria-invalid"));
   };
   const showErrors = (payload) => {
-    const labels = {name_ru:"Название на русском", name_en:"Название на английском", name_id:"Название на индонезийском", is_active:"Показывать на сайте", __all__:"Ошибка"};
+    const labels = {name_ru:"Название на русском", name_en:"Название на английском", is_active:"Показывать на сайте", __all__:"Ошибка"};
     errors.innerHTML = "";
     Object.entries(payload || {}).forEach(([name, messages]) => {
       const paragraph = document.createElement("p");
@@ -66,7 +65,6 @@
     form.action = card.dataset.action;
     fields.nameRu.value = card.dataset.nameRu;
     fields.nameEn.value = card.dataset.nameEn;
-    fields.nameId.value = card.dataset.nameId;
     fields.active.checked = card.dataset.active === "true";
     title.textContent = `Изменить «${card.dataset.nameRu}»`;
     clearErrors();
@@ -79,14 +77,13 @@
     const card = document.createElement("article");
     card.className = "group rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-[#1db1ee]";
     card.setAttribute("data-category-card", "");
-    card.innerHTML = `<div class="flex items-start justify-start gap-3"><span data-category-status class="rounded-full px-2.5 py-1 text-[11px] font-bold"></span></div><h2 data-category-name-ru class="mt-4 text-lg font-black text-slate-900"></h2><p data-category-name-en class="mt-2 text-sm font-semibold text-slate-500"></p><p data-category-name-id class="mt-1 text-sm text-slate-400"></p><div class="mt-5 flex items-center justify-between border-t border-slate-100 pt-4"><span data-category-count class="text-xs font-semibold text-slate-400"></span><button type="button" data-category-edit class="rounded-lg bg-slate-100 px-3 py-2 text-xs font-normal text-slate-700 transition-colors duration-300 ease-out group-hover:bg-[#20180b] group-hover:text-white">Изменить</button></div>`;
+    card.innerHTML = `<div class="flex items-start justify-start gap-3"><span data-category-status class="rounded-full px-2.5 py-1 text-[11px] font-bold"></span></div><h2 data-category-name-ru class="mt-4 text-lg font-black text-slate-900"></h2><p data-category-name-en class="mt-2 text-sm font-semibold text-slate-500"></p><p data-category-name-id class="mt-1 text-sm text-slate-400"></p><div class="mt-5 flex items-center justify-between border-t border-slate-100 pt-4"><span data-category-count class="text-xs font-semibold text-slate-400"></span><button type="button" data-category-edit class="rounded-lg bg-slate-100 px-3 py-2 text-xs font-normal text-slate-700 transition-colors duration-300 ease-out group-hover:bg-[#092332] group-hover:text-white">Изменить</button></div>`;
     return card;
   };
   const fillCard = (card, data) => {
-    Object.assign(card.dataset, {id:data.id, nameRu:data.name_ru, nameEn:data.name_en, nameId:data.name_id, active:String(data.is_active), action:`${modal.dataset.createUrl.replace(/new\/$/, `${data.id}/`)}`});
+    Object.assign(card.dataset, {id:data.id, nameRu:data.name_ru, nameEn:data.name_en, active:String(data.is_active), action:`${modal.dataset.createUrl.replace(/new\/$/, `${data.id}/`)}`});
     card.querySelector("[data-category-name-ru]").textContent = data.name_ru;
     card.querySelector("[data-category-name-en]").textContent = data.name_en;
-    card.querySelector("[data-category-name-id]").textContent = data.name_id;
     card.querySelector("[data-category-count]").textContent = countText(data.article_count || 0);
     const status = card.querySelector("[data-category-status]");
     status.textContent = data.is_active ? "Показывается" : "Скрыта";

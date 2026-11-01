@@ -16,7 +16,7 @@ from blog.slugs import readable_slug
 
 ROOT_DIR = Path(__file__).resolve().parents[3]
 FAKER_DIR = ROOT_DIR / "for_faker"
-LOCALES = ("ru", "en", "id")
+LOCALES = ("ru", "en")
 
 COPY = {
     "ru": {

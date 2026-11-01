@@ -16,7 +16,7 @@
         </div>
         <div class="flex min-h-16 flex-wrap content-start gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-4">
           {% for tag in section.tags %}
-            <span class="inline-flex items-center self-start rounded-xl border border-[#f1c66e] bg-[#fff5dc] px-4 py-2.5 text-sm font-semibold text-[#79501a]">#{{ tag.name }} <small class="ml-1.5 font-semibold opacity-50">{{ tag.article_count }}</small></span>
+            <span class="inline-flex items-center self-start rounded-xl border border-[#9bdcf5] bg-[#e5f6fd] px-4 py-2.5 text-sm font-semibold text-[#03658a]">#{{ tag.name }} <small class="ml-1.5 font-semibold opacity-50">{{ tag.article_count }}</small></span>
           {% empty %}
             <p class="py-2 text-sm text-slate-400">В этой языковой версии тегов пока нет</p>
           {% endfor %}

@@ -263,7 +263,6 @@ def category_payload(category, *, created=False):
         "id": category.pk,
         "name_ru": category.name_ru,
         "name_en": category.name_en,
-        "name_id": category.name_id,
         "is_active": category.is_active,
         "article_count": category.articles.count(),
         "created": created,
@@ -297,7 +296,6 @@ def tag_list(request):
     tag_sections = [
         {"locale": "ru", "title": "Русские теги", "tags": tags.filter(locale="ru")},
         {"locale": "en", "title": "Английские теги", "tags": tags.filter(locale="en")},
-        {"locale": "id", "title": "Индонезийские теги", "tags": tags.filter(locale="id")},
     ]
     return render(request, "cms/tags/list.html", {"tag_sections": tag_sections})
 
