@@ -604,6 +604,21 @@ class CustomCmsTests(TestCase):
         self.assertContains(response, f'href="{article.public_url}"')
         self.assertContains(response, 'target="_blank"')
 
+    @override_settings(FRONTEND_URL="https://zvezdach.com")
+    def test_public_urls_follow_frontend_language_routes(self):
+        from .serializers import ArticleListSerializer
+
+        article = Article.objects.create(
+            locale="ru", category=self.category, author=self.user,
+            title="Подарки в Telegram", slug="telegram-podarki",
+            excerpt="Короткое описание", content="Текст статьи",
+        )
+        self.assertEqual(article.public_url, f"https://zvezdach.com/blog/{article.slug}")
+        self.assertEqual(ArticleListSerializer(article).data["url"], article.public_url)
+        article.locale = "en"
+        self.assertEqual(article.public_url, f"https://zvezdach.com/en/blog/{article.slug}")
+        self.assertEqual(ArticleListSerializer(article).data["url"], article.public_url)
+
     def test_future_publication_is_shown_as_scheduled(self):
         self.client.force_login(self.user)
         self.client.post(

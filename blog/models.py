@@ -189,7 +189,7 @@ class Article(models.Model):
 
     @property
     def localized_path(self) -> str:
-        prefix = "" if self.locale == Locale.EN else f"/{self.locale}"
+        prefix = "/en" if self.locale == Locale.EN else ""
         return f"{prefix}/blog/{self.slug}"
 
     @property
