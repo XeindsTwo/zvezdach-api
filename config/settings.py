@@ -160,3 +160,5 @@ CSRF_COOKIE_NAME = "zvezdach_blog_csrftoken"
 
 SESSION_COOKIE_PATH = f"{URL_PREFIX}/"
 CSRF_COOKIE_PATH = f"{URL_PREFIX}/"
+
+LOGGING = {"version": 1, "disable_existing_loggers": False, "handlers": {"console": {"class": "logging.StreamHandler"}}, "loggers": {"cms.audit": {"handlers": ["console"], "level": "INFO", "propagate": False}}}

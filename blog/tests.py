@@ -24,6 +24,31 @@ from .reading_time import calculate_reading_time
 from .templatetags.cms_format import cms_datetime
 
 
+class CmsSecurityTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(username="cms-security", password="correct-password", is_staff=True)
+
+    def test_login_limit_and_audit(self):
+        from .models import CmsAuditEvent, CmsLoginAttempt
+
+        url = reverse("cms:login")
+        for _ in range(5):
+            self.client.post(url, {"username": self.user.username, "password": "wrong"}, REMOTE_ADDR="192.0.2.10")
+        self.assertEqual(CmsLoginAttempt.objects.filter(ip="192.0.2.10").count(), 5)
+        response = self.client.post(url, {"username": self.user.username, "password": "correct-password"}, REMOTE_ADDR="192.0.2.10")
+        self.assertEqual(response.status_code, 429)
+        response = self.client.post(url, {"username": self.user.username, "password": "correct-password"}, REMOTE_ADDR="192.0.2.11")
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(CmsAuditEvent.objects.filter(actor=self.user.username, ip="192.0.2.11", action="login").exists())
+
+    def test_untrusted_forwarded_ip_is_ignored(self):
+        from django.test import RequestFactory
+        from .cms_views import cms_ip
+
+        request = RequestFactory().get("/cms/login/", REMOTE_ADDR="192.0.2.10", HTTP_X_FORWARDED_FOR="198.51.100.20")
+        self.assertEqual(cms_ip(request), "192.0.2.10")
+
+
 def test_image(name="source.png", color=(255, 174, 25)):
     buffer = io.BytesIO()
     Image.new("RGB", (48, 32), color).save(buffer, format="PNG")

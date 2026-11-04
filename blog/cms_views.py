@@ -1,5 +1,8 @@
+import ipaddress
 import json
 import uuid
+import logging
+from datetime import timedelta
 from functools import wraps
 
 from django.contrib import messages
@@ -10,14 +13,15 @@ from django.core.files.storage import default_storage
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Count, Q
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
+from django.utils import timezone
 from django.views.decorators.http import require_GET, require_POST
 from .cms_forms import ArticleForm, ArticleGalleryFormSet, CategoryForm, CmsAuthenticationForm
 from .constants import normalize_locale
 from .image_processing import optimize_image
-from .models import Article, Category, Tag
+from .models import Article, Category, Tag, CmsLoginAttempt, CmsAuditEvent
 from .slugs import readable_slug
 
 
@@ -41,10 +45,44 @@ def cms_required(view):
     return wrapped
 
 
+cms_logger = logging.getLogger("cms.audit")
+
+
+def cms_ip(request):
+    peer = request.META.get("REMOTE_ADDR", "")
+    try:
+        peer_ip = ipaddress.ip_address(peer)
+        if peer_ip.is_loopback:
+            forwarded = request.META.get("HTTP_X_FORWARDED_FOR", "").split(",")[0].strip()
+            return str(ipaddress.ip_address(forwarded)) if forwarded else str(peer_ip)
+        return str(peer_ip)
+    except ValueError:
+        return "127.0.0.1"
+
+
+def msk_now():
+    return timezone.localtime(timezone.now(), timezone.get_fixed_timezone(180)).strftime("%Y-%m-%d %H:%M:%S")
+
+
+def audit(request, action, target=""):
+    event = CmsAuditEvent.objects.create(actor=request.user.get_username(), ip=cms_ip(request), action=action, target=str(target)[:255])
+    local_time = timezone.localtime(event.occurred_at, timezone.get_fixed_timezone(180))
+    cms_logger.info("%s MSK ip=%s actor=%s action=%s target=%s", local_time.strftime("%Y-%m-%d %H:%M:%S"), event.ip, event.actor, event.action, event.target)
+
+
 class CmsLoginView(LoginView):
     template_name = "cms/auth/login.html"
     authentication_form = CmsAuthenticationForm
     redirect_authenticated_user = True
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.method == "POST":
+            ip = cms_ip(request)
+            since = timezone.now() - timedelta(minutes=15)
+            if CmsLoginAttempt.objects.filter(ip=ip, attempted_at__gte=since).count() >= 5:
+                cms_logger.warning("%s MSK login_blocked ip=%s", msk_now(), ip)
+                return HttpResponse("Слишком много попыток входа. Повторите через 15 минут", status=429)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         if not can_access_cms(self.request.user):
@@ -54,11 +92,17 @@ class CmsLoginView(LoginView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
+        CmsLoginAttempt.objects.filter(ip=cms_ip(self.request)).delete()
+        audit(self.request, "login")
         if self.request.headers.get("x-requested-with") == "XMLHttpRequest":
             return JsonResponse({"ok": True, "redirect": self.get_success_url()})
         return response
 
     def form_invalid(self, form):
+        ip = cms_ip(self.request)
+        username = str(self.request.POST.get("username", ""))[:150]
+        CmsLoginAttempt.objects.create(ip=ip, username=username)
+        cms_logger.warning("%s MSK login_failed ip=%s username=%r", msk_now(), ip, username)
         if self.request.headers.get("x-requested-with") == "XMLHttpRequest":
             return JsonResponse(
                 {"ok": False, "message": "Неверный логин или пароль"},
@@ -69,6 +113,8 @@ class CmsLoginView(LoginView):
 
 @require_POST
 def cms_logout(request):
+    if request.user.is_authenticated:
+        audit(request, "logout")
     logout(request)
     return redirect("cms:login")
 
@@ -209,6 +255,7 @@ def article_form(request, pk=None):
             save_tags(item, form.cleaned_data.get("tags_input", ""))
             gallery_formset.instance = item
             gallery_formset.save()
+        audit(request, "article_create" if created else "article_update", f"{item.pk}:{item.slug}:{item.status}")
         if item.is_scheduled:
             message = "Публикация запланирована"
         elif item.status == Article.Status.PUBLISHED:
@@ -243,6 +290,7 @@ def article_form(request, pk=None):
 @require_POST
 def article_delete(request, pk):
     article = get_object_or_404(visible_articles(request.user), pk=pk)
+    audit(request, "article_delete", f"{article.pk}:{article.slug}")
     article.delete()
     messages.success(request, "Статья удалена")
     return redirect("cms:article-list")
@@ -275,6 +323,7 @@ def category_form(request, pk=None):
     form = CategoryForm(request.POST or None, instance=category)
     if request.method == "POST" and form.is_valid():
         item = form.save()
+        audit(request, "category_create" if category is None else "category_update", f"{item.pk}:{item.name_en}")
         if request.headers.get("x-requested-with") == "XMLHttpRequest":
             return JsonResponse(category_payload(item, created=category is None))
         messages.success(request, "Категория сохранена")
@@ -327,6 +376,7 @@ def image_upload(request):
     file_id = uuid.uuid4().hex
     processed_path = default_storage.save(f"blog/editor/{file_id}-{processed.name}", processed)
     payload = {"location": request.build_absolute_uri(default_storage.url(processed_path))}
+    audit(request, "image_upload", processed_path)
     if avif:
         avif_path = default_storage.save(f"blog/editor/{file_id}.avif", avif)
         payload["avif"] = request.build_absolute_uri(default_storage.url(avif_path))

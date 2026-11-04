@@ -18,6 +18,20 @@ class Locale(models.TextChoices):
     RU = "ru", "Russian"
 
 
+class CmsLoginAttempt(models.Model):
+    ip = models.GenericIPAddressField(db_index=True)
+    username = models.CharField(max_length=150, blank=True)
+    attempted_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+
+class CmsAuditEvent(models.Model):
+    occurred_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    actor = models.CharField(max_length=150)
+    ip = models.GenericIPAddressField()
+    action = models.CharField(max_length=40)
+    target = models.CharField(max_length=255, blank=True)
+
+
 class Category(models.Model):
     name_ru = models.CharField(max_length=120)
     name_en = models.CharField(max_length=120)
